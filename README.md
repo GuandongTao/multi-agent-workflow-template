@@ -166,25 +166,47 @@ By contrast, `CLAUDE.md` is repository-level guidance used by Claude Code when i
 
 Customize only the short **Project Context** section before pasting. Keep detailed and evolving feature knowledge in Obsidian rather than duplicating it in Project Instructions.
 
+### Keep brainstorming cheap: sync explicitly
+
+Do **not** have Claude access Obsidian during ordinary brainstorming. MCP reads/writes can consume conversation context quickly.
+
+Use:
+
+```text
+Save this
+```
+
+to persist only the directly relevant conclusion.
+
+Use:
+
+```text
+Sync brain
+```
+
+to persist durable conclusions since the last successful sync.
+
+Use:
+
+```text
+Reconcile project brain
+```
+
+only as an occasional broader cleanup/alignment pass.
+
 The intended loop is:
 
 ```text
-Claude Project discussion
+normal brainstorming
         ↓
-durable conclusions
+no Obsidian calls
         ↓
-Obsidian MCP
+"Save this" or "Sync brain"
         ↓
-PROJECT.md / Features / Decisions / PROJECT.canvas
+targeted Obsidian updates
 ```
 
-During normal brainstorming, Claude should checkpoint durable knowledge rather than documenting every message.
-
-A useful maintenance command is:
-
-```text
-Reconcile the project brain
-```
+This keeps Obsidian as durable memory without paying MCP/context overhead on every turn.
 
 ---
 
@@ -203,21 +225,25 @@ Prefer links to Feature notes instead of duplicating detailed content.
 
 ### `Features/`
 
-Feature notes are living descriptions of the current understanding of a feature, not meeting logs.
+Feature notes are concise **current-state** descriptions, not meeting logs. Replace superseded text instead of appending chronological history. Preserve prior reasoning only when it is still useful; consequential rationale belongs in an ADR.
 
 ### `Decisions/`
 
-Use lightweight ADRs only when the reasoning behind a decision is likely to matter later.
+Use lightweight ADRs only when the reasoning behind a consequential decision is likely to matter later.
+
+### `PROJECT.md`
+
+Treat `PROJECT.md` as the project index, not a file that must change on every save. Update it only when hierarchy, cross-cutting structure, important Decisions, or project-level Open Questions are affected. Local Feature changes should remain local.
 
 ### `PROJECT.canvas`
 
-Use Canvas for:
+Canvas is a **high-level visual overview**, not a live dependency graph.
 
-- Major Areas
-- Features
-- meaningful dependencies
-- cross-area relationships
-- important decisions when useful
+Update it only when:
+- the user explicitly requests a Canvas change; or
+- a Major Area or Feature is created, moved, merged, or removed.
+
+Use spatial grouping as the primary structure. Edges should be rare and high-signal; prefer no edge when grouping/proximity already communicates the relationship.
 
 For a brand-new Canvas, plan the initial layout before writing it. After a meaningful layout exists, prefer localized edits and preserve manual rearrangements.
 
@@ -350,9 +376,9 @@ Codex's MCP server interface is experimental, so check current Codex documentati
 ## 10. Suggested feature workflow
 
 ```text
-1. Brainstorm in Claude Project.
-2. Claude checkpoints durable conclusions into Obsidian.
-3. You inspect/rearrange PROJECT.canvas when useful.
+1. Brainstorm normally in Claude Project (no Obsidian calls).
+2. Use "Save this" for an important individual conclusion, or "Sync brain" at a natural checkpoint.
+3. Update/rearrange PROJECT.canvas only when project structure materially changes or you explicitly want a visual refresh.
 4. When a feature is mature, say: "Prepare this feature for specification."
 5. Move to Claude Code.
 6. Run Spec Kit specification/planning/tasks.
@@ -399,20 +425,42 @@ A public template should contain configuration **examples**, never real credenti
 
 ## 12. Context-efficiency tips
 
-MCP-heavy workflows can consume conversation context quickly.
+MCP-heavy workflows can consume conversation context quickly. The largest savings come from avoiding unnecessary Obsidian operations.
 
-Useful practices:
+Recommended behavior:
 
-- use adaptive MCP tool loading where available;
-- read known files directly rather than repeatedly listing the whole vault;
-- prefer partial or batched reads when full file contents are unnecessary;
-- patch existing notes instead of rewriting them wholesale;
-- plan Canvas changes before calling tools;
-- batch Canvas operations when supported;
-- avoid repeated verification reads;
-- start a fresh chat after large one-time initialization/import operations.
+1. **No automatic Obsidian access during normal brainstorming.** Use `Save this` or `Sync brain` explicitly.
+2. **Do not maintain Canvas continuously.** Read/update it only for explicit requests or structural changes.
+3. **Start with the smallest likely affected file set.** Expand when hierarchy, cross-feature relationships, Decisions, or Open Questions may also be affected.
+4. **Prefer direct/partial reads when sufficient.** Read the full note when surrounding context is needed for correctness.
+5. **Do not reread solely to verify successful writes.** Assume a successful tool response succeeded unless it reports ambiguity/error or the next step requires the updated content.
+6. **Do not touch `PROJECT.md` for purely local Feature changes.**
+7. **Keep Feature notes concise and current-state.** Replace superseded content instead of accumulating chronological history.
+8. **Adaptive MCP tool loading is a reasonable default.**
 
-The goal is incremental maintenance, not repeated reconstruction of the project brain.
+If Claude is uncertain about the blast radius of a change, correctness wins: allow the extra read rather than risk missing an important update.
+
+A typical efficient save:
+
+```text
+identify likely affected note(s)
+→ read only what is needed
+→ patch relevant content
+→ stop
+```
+
+Avoid:
+
+```text
+list whole vault
+→ read PROJECT.md
+→ read several Features
+→ read Canvas
+→ write
+→ reread everything for verification
+```
+
+Start a fresh chat after large one-time initialization/import operations when useful; Obsidian remains the durable project memory.
 
 ---
 

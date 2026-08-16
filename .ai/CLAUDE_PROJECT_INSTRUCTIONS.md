@@ -1,184 +1,103 @@
 # Project Context
 
-[Describe the project in 2–5 sentences: what it is, who it is for, and the main outcome you want.]
+[Describe the project in 2–5 sentences: what it is, who/what it serves, and the main outcome.]
 
 Initial focus:
-- [Primary domain / platform / use case]
-- [Secondary domain / platform / use case]
-- [Important strategic direction, if any]
+- [Primary area / platform / use case]
+- [Secondary area, if relevant]
+- [Important strategic direction, if relevant]
 
-## Core principles
+## Principles
 
-- [Principle about architecture or product behavior]
-- [Principle about boundaries / modularity]
-- [Principle about ownership of responsibilities]
-- [Principle about reuse / shared infrastructure]
-- [Principle about prototyping vs. production implementation]
+- [Important architecture/product principle]
+- [Important boundary or modularity principle]
+- [Important responsibility/ownership principle]
+- [Important reuse or consistency principle]
 - Prefer simple architecture over premature abstraction.
-- Treat safety, reliability, and failure handling as first-class requirements where relevant.
+- Treat safety, reliability, and failure handling as first-class where relevant.
 
-## During brainstorming
-
-- Distinguish decisions, hypotheses, and open questions; keep tentative ideas clearly tentative.
-- Challenge unnecessary complexity.
-- Do not treat every idea as committed or approved scope.
-- Surface conflicts with existing architecture or decisions rather than silently resolving them.
-- Prioritize the conversation; maintain evolving project knowledge in Obsidian quietly unless my judgment is needed.
+During brainstorming, distinguish decisions, hypotheses, and open questions; keep tentative ideas tentative; challenge unnecessary complexity; do not treat brainstorming as approved scope; surface conflicts rather than silently resolving them.
 
 ---
 
-# Obsidian — Persistent Project Memory
+# Obsidian Project Memory
 
-Obsidian is the persistent structured memory for this project. Keep it organized, current, and concise with minimal manual bookkeeping from me. Do not document every message.
+Obsidian is the durable project memory.
 
-## When to checkpoint
+Do not access it during normal brainstorming unless I explicitly request it. Use conversation/project memory when sufficient.
 
-Checkpoint when something durable emerges, especially when:
+- **"Save this"** → persist the directly relevant conclusion.
+- **"Sync brain"** → persist durable conclusions since the last successful sync.
+- **"Reconcile project brain"** → rare broader cleanup/alignment pass.
 
-- I explicitly ask to add, save, record, move, or reorganize something.
-- We reach a clear decision or conclusion.
-- A new Major Area or Feature becomes distinct enough to name.
-- An existing Feature gains an important behavior, constraint, dependency, relationship, or open question.
-- I revise or reverse an earlier decision.
-- A substantial topic ends or a long discussion has accumulated durable conclusions.
-
-## What to save
-
-Save durable project understanding.
-
-Do not persist:
-
-- conversational filler;
-- every intermediate thought;
-- weak speculation;
-- duplicates;
-- abandoned ideas unless their rejection matters;
-- implementation details that belong downstream in Spec Kit.
-
-## Vault structure
+## Structure
 
 Maintain primarily:
 
-- `PROJECT.md` — concise project overview and hierarchy.
-- `PROJECT.canvas` — visual map of the project.
-- `Features/` — living notes for meaningful features.
-- `Decisions/` — lightweight ADRs when decision rationale is likely to matter later.
+- `PROJECT.md` — concise index of Major Areas, Features, important Decisions, and project-level Open Questions.
+- `Features/` — current understanding of meaningful features.
+- `Decisions/` — lightweight ADRs when rationale matters.
+- `PROJECT.canvas` — high-level visual map.
 
-Do not introduce tags, frontmatter schemas, or other metadata systems unless they solve a concrete organizational need.
+Do not add tags, frontmatter schemas, or other metadata systems without a concrete need.
 
-### `PROJECT.md`
-
-Keep it concise. Cover:
-
-- Major Areas and their Features;
-- meaningful cross-cutting Features;
-- important Decisions;
-- important Open Questions.
-
-Prefer links to Feature notes over duplicating detail.
+Save durable understanding, not conversational history, weak speculation, duplicates, superseded detail, or implementation material that belongs in Spec Kit.
 
 ### Feature notes
 
-Describe the current understanding of a feature, not discussion history.
+Keep Feature notes concise and current-state oriented. Replace stale text when conclusions change rather than appending chronological history. Preserve old reasoning only when still useful; move consequential rationale into an ADR.
 
-Include only what is useful, such as:
+Create a new Feature only when it is distinct enough to reason about independently.
 
-- purpose;
-- current behavior;
-- constraints;
-- dependencies;
-- relationships;
-- decisions;
-- open questions;
-- possible future scope.
+### Decisions
 
-Prefer updating an existing Feature over creating a duplicate. Create a new Feature only when the concept is distinct enough to reason about independently.
+Create ADRs only for consequential decisions whose reasoning may matter later. Keep them lightweight: Context, Decision, Why, Consequences, When to revisit.
 
-### Decisions / ADRs
+### `PROJECT.md`
 
-Create an ADR only when the reasoning is likely to matter later.
+Touch `PROJECT.md` only when hierarchy, cross-cutting structure, important Decisions, or project-level Open Questions are affected. Local Feature changes should remain local.
 
-Keep it lightweight:
+### `PROJECT.canvas`
 
-- Context
-- Decision
-- Why
-- Consequences
-- When to revisit
+Canvas is a visual overview, not a live dependency graph.
 
-Do not create ADRs for routine or easily reversible choices.
+Update it only when explicitly requested or when a Major Area/Feature is created, moved, merged, or removed.
 
-## `PROJECT.canvas`
+Use spatial grouping as the primary structure. Edges are exceptional; add only high-signal relationships that proximity/grouping cannot express.
 
-Treat `PROJECT.canvas` as the primary visual map.
+Preserve manual layout. If Canvas is empty, create a sensible initial layout efficiently; afterward prefer localized edits.
 
-Use spatial grouping as the main representation of structure. Show Major Areas, Features, and important cross-area relationships or Decisions when useful.
+## Efficient & safe Obsidian use
 
-Edges are exceptional, not default. Add an edge only when the relationship is high-signal and cannot be communicated clearly through grouping or proximity. Prefer no edge over a weak or obvious edge; most Features should have zero or very few.
+Before calling tools, identify the likely affected files and start with the smallest reasonable set. Expand when hierarchy, cross-feature relationships, Decisions, or Open Questions may also be affected.
 
-Treat my manual movement, grouping, and linking as intentional.
+- Use known paths directly; avoid vault-wide discovery unless needed.
+- Prefer partial/direct reads when sufficient; read full notes when surrounding context is needed for correctness.
+- Prefer targeted patches over full-file overwrites.
+- Assume successful writes succeeded; do not reread solely for verification.
+- If unsure about blast radius, spend the extra read rather than risk missing an update.
+- Never overwrite unverified content or guess at vault state.
 
-If the Canvas is empty or has no meaningful manual layout, create a sensible initial layout autonomously. Plan the full layout first and use the fewest possible tool calls, ideally a single write if supported.
-
-Once a meaningful or manually organized layout exists, preserve it and make localized edits rather than rebuilding the Canvas.
-
-## Safe Obsidian behavior
-
-Before modifying existing memory:
-
-- Read the relevant note or Canvas first.
-- Prefer direct reads of known paths and partial/batched reads when full contents are unnecessary.
-- Prefer targeted patch/update operations over full-file overwrites.
-- Plan and batch related operations before calling tools.
-- Avoid unnecessary repeated verification reads.
-- If vault listing fails, use known paths or search instead; never treat listing failure as proof a file does not exist.
-- Never destructively overwrite when the current state cannot be verified.
-- Do not guess at vault contents.
-
-If the Obsidian MCP connection is unavailable, continue the discussion normally and tell me the checkpoint could not be saved.
+If MCP is unavailable, continue the discussion and report that the requested save/sync was not completed.
 
 ---
 
-# Relationship to Spec Kit
+# Spec Kit
 
-Obsidian holds evolving product and system understanding.
+Obsidian holds evolving understanding; Spec Kit holds approved requirements and implementation planning.
 
-Spec Kit holds approved feature requirements and implementation planning.
+**"Prepare this feature for specification"** → summarize stable:
+- intent
+- agreed behavior
+- constraints
+- important edge cases
+- dependencies
+- non-goals
+- unresolved blockers
+- relevant Decisions
 
-When I say:
+Do not create or approve a Spec Kit specification unless explicitly requested.
 
-**"Prepare this feature for specification"**
+## Reconcile
 
-summarize the stable material needed for Spec Kit:
-
-- intent;
-- agreed behavior;
-- constraints;
-- important edge cases;
-- dependencies;
-- non-goals;
-- unresolved blockers;
-- relevant Decisions.
-
-Do not create or approve a Spec Kit specification unless I explicitly request it.
-
----
-
-# Command: Reconcile the Project Brain
-
-When I say:
-
-**"Reconcile the project brain"**
-
-inspect the relevant project memory and:
-
-- incorporate durable conclusions from the current discussion;
-- update stale Feature descriptions;
-- merge obvious duplicates;
-- remove clearly obsolete representations when safe;
-- improve Major Area grouping when useful;
-- keep `PROJECT.md` and `PROJECT.canvas` conceptually aligned;
-- preserve useful manual Canvas organization;
-- surface only material conflicts or structural changes that require my judgment.
-
-The objective is a project brain that stays concise, current, connected, and visually understandable with minimal manual maintenance.
+When I say **"Reconcile project brain"**, update stale material, merge duplicates, safely remove obsolete representations, improve hierarchy where useful, align `PROJECT.md` and Canvas, preserve manual layout, and surface only conflicts or structural changes requiring my judgment.
