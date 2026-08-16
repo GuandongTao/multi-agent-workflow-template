@@ -36,6 +36,9 @@ your-project/
 ├─ .github/
 ├─ setup/
 │  └─ CLAUDE_PROJECT_INSTRUCTIONS.md
+├─ skills/
+│  └─ project-brain/
+│     └─ SKILL.md
 ├─ AGENTS.md
 ├─ CLAUDE.md
 ├─ .gitignore
@@ -166,6 +169,8 @@ By contrast, `CLAUDE.md` is repository-level guidance used by Claude Code when i
 
 Customize only the short **Project Context** section before pasting. Keep detailed and evolving feature knowledge in Obsidian rather than duplicating it in Project Instructions.
 
+The Obsidian sync protocol itself lives in the reusable **Project Brain** skill, not in the always-loaded Project Instructions.
+
 ### Keep brainstorming cheap: sync explicitly
 
 Do **not** have Claude access Obsidian during ordinary brainstorming. MCP reads/writes can consume conversation context quickly.
@@ -210,7 +215,31 @@ This keeps Obsidian as durable memory without paying MCP/context overhead on eve
 
 ---
 
-## 6. Obsidian conventions
+## 6. Install the Project Brain skill
+
+This repository includes a reusable Claude Skill at:
+
+```text
+skills/project-brain/SKILL.md
+```
+
+The Skill contains the Obsidian memory protocol, Canvas rules, efficient MCP behavior, and the preparation step for Spec Kit.
+
+The Claude Project Instructions intentionally stay short and only contain project-specific context plus a trigger telling Claude to use the **Project Brain** skill when the user explicitly asks to save/sync/reconcile project memory.
+
+### Install the Skill in Claude
+
+1. Zip the `skills/project-brain/` folder so that the ZIP contains `project-brain/SKILL.md`.
+2. In Claude, open **Customize → Skills**.
+3. Create/upload a custom skill and upload the ZIP.
+4. Enable the **Project Brain** skill.
+5. Keep the Skill generic; put project-specific context in `setup/CLAUDE_PROJECT_INSTRUCTIONS.md`.
+
+The phrase **"Prepare this feature for specification"** is a workflow convention, not a built-in Spec Kit command. It tells the Project Brain skill to summarize mature Obsidian knowledge for the downstream Spec Kit workflow.
+
+---
+
+## 7. Obsidian conventions
 
 ### `PROJECT.md`
 
@@ -249,7 +278,7 @@ For a brand-new Canvas, plan the initial layout before writing it. After a meani
 
 ---
 
-## 7. Install GitHub Spec Kit
+## 8. Install GitHub Spec Kit
 
 Spec Kit is optional but useful once brainstorming turns into implementation work.
 
@@ -300,7 +329,7 @@ That should produce the stable intent, agreed behavior, constraints, edge cases,
 
 ---
 
-## 8. Claude Code
+## 9. Claude Code
 
 Open Claude Code from the project root.
 
@@ -328,7 +357,7 @@ Do not duplicate detailed feature requirements here; those belong in Spec Kit.
 
 ---
 
-## 9. Optional: connect Claude Code to Codex through MCP
+## 10. Optional: connect Claude Code to Codex through MCP
 
 This is useful if you want Claude Code to act as planner/reviewer while Codex acts as an implementation worker.
 
@@ -373,7 +402,7 @@ Codex's MCP server interface is experimental, so check current Codex documentati
 
 ---
 
-## 10. Suggested feature workflow
+## 11. Suggested feature workflow
 
 ```text
 1. Brainstorm normally in Claude Project (no Obsidian calls).
@@ -394,7 +423,7 @@ Requirements are not permanently frozen. During an implementation cycle, the app
 
 ---
 
-## 11. Git and security
+## 12. Git and security
 
 Before publishing or turning a repository into a public template:
 
@@ -423,9 +452,9 @@ A public template should contain configuration **examples**, never real credenti
 
 ---
 
-## 12. Context-efficiency tips
+## 13. Context-efficiency tips
 
-MCP-heavy workflows can consume conversation context quickly. The largest savings come from avoiding unnecessary Obsidian operations.
+MCP-heavy workflows can consume conversation context quickly. The largest savings come from avoiding unnecessary Obsidian operations and keeping the detailed Obsidian protocol in the dynamically used **Project Brain** skill rather than in always-loaded Project Instructions.
 
 Recommended behavior:
 
@@ -464,7 +493,7 @@ Start a fresh chat after large one-time initialization/import operations when us
 
 ---
 
-## 13. What belongs where?
+## 14. What belongs where?
 
 ```text
 Claude Project Instructions
@@ -493,7 +522,7 @@ Git/GitHub
 
 ---
 
-## 14. New-project checklist
+## 15. New-project checklist
 
 For each new project:
 
@@ -503,6 +532,7 @@ Use GitHub template
 → open brain/ in Obsidian
 → enable/confirm MCP Connector
 → create Claude Project
+→ install/enable the Project Brain skill
 → paste setup/CLAUDE_PROJECT_INSTRUCTIONS.md into Claude Project Instructions
 → customize Project Context
 → begin brainstorming
